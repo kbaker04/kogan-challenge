@@ -64,21 +64,24 @@ const HomePage = () => {
             let cubicW = null;
             const { size } = product;
             const { width, length, height } = size;
+            const weight = product.weight / 1000;
             //calculate cubic weight only for category Air Conditioners
             if (product.category === "Air Conditioners") {
               const convFactor = 250;
               let cubicM =
-                parseFloat(length) * parseFloat(height) * parseFloat(width);
+                ((((parseFloat(length) / 100) * parseFloat(height)) / 100) *
+                  parseFloat(width)) /
+                100;
               cubicW = cubicM * convFactor;
             }
             return (
               <tr key={id}>
                 <td>{product.title}</td>
                 <td>{product.category}</td>
-                <td>{product.weight}</td>
+                <td>{weight > 0 ? `${weight.toFixed(2)} kg` : "N/A"}</td>
                 <td>
                   {size.length > 0
-                    ? `Width: ${width} Length: ${length} Height: ${height}`
+                    ? `Width: ${width}cm Length: ${length}cm Height: ${height}cm`
                     : "N/A"}
                 </td>
                 <td>{cubicW ? `${cubicW.toFixed(2)} kg` : "N/A"}</td>
