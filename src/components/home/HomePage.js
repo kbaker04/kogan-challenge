@@ -42,9 +42,6 @@ const HomePage = () => {
       paginateFlag = paginatePath ? true : false;
     }
 
-    const unique = [...new Set(list.map((item) => item.category))];
-    console.log(unique.sort());
-
     //set the complete list as component state
     setProductList(list);
   };
@@ -67,7 +64,7 @@ const HomePage = () => {
             let cubicW = null;
             const { size } = product;
             const { width, length, height } = size;
-            //calculate cubic weight only for Air Conditions
+            //calculate cubic weight only for category Air Conditioners
             if (product.category === "Air Conditioners") {
               const convFactor = 250;
               let cubicM =
@@ -84,7 +81,7 @@ const HomePage = () => {
                     ? `Width: ${width} Length: ${length} Height: ${height}`
                     : "N/A"}
                 </td>
-                <td>{cubicW ? `${cubicW.toFixed(2)}kg` : "N/A"}</td>
+                <td>{cubicW ? `${cubicW.toFixed(2)} kg` : "N/A"}</td>
               </tr>
             );
           })}
