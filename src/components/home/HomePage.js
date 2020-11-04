@@ -2,6 +2,14 @@ import React, { useEffect, useState } from "react";
 import challengeAPI from "../../apis/challengeAPI";
 import Container from "react-bootstrap/Container";
 import Table from "react-bootstrap/Table";
+import { calcCubicWeight } from "../../helpers/calculations";
+
+/**
+ * HomePage Component fetches product list from api and returns results
+ * Some clean up of data is done to convert weight in grams to kg
+ * N/A is shown where data is missing or incomplete
+ * Cubic Weight is calculated for Air Conditioners category only
+ **/
 
 const HomePage = () => {
   const [productList, setProductList] = useState(null);
@@ -61,19 +69,9 @@ const HomePage = () => {
         </thead>
         <tbody>
           {productList.map((product, id) => {
-            let cubicW = null;
             const { size } = product;
             const { width, length, height } = size;
             const weight = product.weight / 1000;
-            //calculate cubic weight only for category Air Conditioners
-            if (product.category === "Air Conditioners") {
-              const convFactor = 250;
-              let cubicM =
-                ((((parseFloat(length) / 100) * parseFloat(height)) / 100) *
-                  parseFloat(width)) /
-                100;
-              cubicW = cubicM * convFactor;
-            }
             return (
               <tr key={id}>
                 <td>{product.title}</td>
@@ -84,7 +82,11 @@ const HomePage = () => {
                     ? `Width: ${width}cm Length: ${length}cm Height: ${height}cm`
                     : "N/A"}
                 </td>
-                <td>{cubicW ? `${cubicW.toFixed(2)} kg` : "N/A"}</td>
+                <td>
+                  {product.category === "Air Conditioners"
+                    ? `${calcCubicWeight(length, height, width)} kg`
+                    : "N/A"}
+                </td>
               </tr>
             );
           })}
